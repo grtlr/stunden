@@ -144,6 +144,7 @@ $(document).ready(function() {
          ysel.append($("<option>").attr('value',i).text(i));
     }
     $('#chooser').prepend(ysel);
+	ysel.val( moment().year() ); // Set default year to _now_
 
     // create month dropdown
     var msel = $('<select>').attr('id','month');
@@ -152,6 +153,13 @@ $(document).ready(function() {
          msel.append($("<option>").attr('value',ms[i]).text(ms[i]));
     }
     $('#chooser').prepend(msel);
+	msel.val( ms[moment().month()] ); // Set default month to _now_
+	
+	// create a form to choose hours
+	var hsel = $('<input/>').attr({type:'number',name:'hours',min:0,placeHolder:'Stunden'});
+	$('#chooser').prepend( hsel );
+	hsel.val( 30 );
+	hsel.focus();
 
     $( "#chooser" ).submit(function( event ) {
         var m = $( "#month" ).val();
@@ -159,7 +167,7 @@ $(document).ready(function() {
         var d = moment().set({'year':y, 'month':m, 'date':1});
         $('#header').text(m + ' ' + y);
         $('#hours').empty();
-        $('#hours').append(createTable(d, 30));
+        $('#hours').append(createTable(d, hsel.val()));
         event.preventDefault();
     });
 });
