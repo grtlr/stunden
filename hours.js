@@ -40,7 +40,7 @@ function isWorkday(date) {
     var dn = date.day();
 	var notsunday =  dn < 6 && dn > 0;
 
-    var datestr = date.format("YYYYMMdd");
+    var datestr = date.format("YYYYMMDD");
     var notholiday = ! ( datestr in holidays); 
     
     return notsunday && notholiday;
