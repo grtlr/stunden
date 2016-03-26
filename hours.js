@@ -38,7 +38,12 @@ function Slot(date, start, stop) {
 // check if a date is a workday
 function isWorkday(date) {
     var dn = date.day();
-    return dn < 6 && dn > 0;
+	var notsunday =  dn < 6 && dn > 0;
+
+    var datestr = date.format("YYYYMMdd");
+    var notholiday = ! ( datestr in holidays); 
+    
+    return notsunday && notholiday;
 }
 
 // split an amount of hours per month into chunks
