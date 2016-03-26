@@ -37,8 +37,17 @@ function Slot(date, start, stop) {
 
 // check if a date is a workday
 function isWorkday(date) {
+    return !isWeekend( date ) && !isHoliday( date );
+}
+
+function isWeekend( date ) {
     var dn = date.day();
-    return dn < 6 && dn > 0;
+	return  dn >= 6 || dn <= 0;
+}
+
+function isHoliday( date ) {
+    var datestr = date.format("YYYYMMDD");
+    return datestr in holidays; 
 }
 
 // split an amount of hours per month into chunks
@@ -117,7 +126,11 @@ function createTable(date, amount) {
         var row = $('<tr>');
         row.append('<td>'+result[i].date.format('ddd DD.MM.YYYY')+'</td>');
         if (result[i].empty()) {
-            row.append('<td></td><td></td>');
+			if ( isHoliday( result[i].date ) ) {
+				row.append('<td><b>' + holidays[ result[i].date.format('YYYYMMDD') ] + '</b></td><td>--</td>');
+			} else {
+				row.append('<td>&nbsp;------</td><td>--</td>');
+			}
         } else {
             row.append('<td>'+result[i].start+':00 - '+result[i].stop+':00</td>');
             row.append('<td>'+result[i].duration()+'h'+'</td>');
